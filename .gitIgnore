@@ -1,0 +1,9 @@
+/node_modules
+client/build
+client/node_modules
+service_account.json
+.npm
+.eslintcache
+*package-lock.json
+debug.log
+.env
