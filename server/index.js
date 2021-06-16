@@ -24,7 +24,7 @@ const limiter = rateLimit({
 
 // Adding cors support
  app.use(cors({
-   origin: '*',  //Origins need to be changed
+   origin: process.env.Client_Domain,
    methods: 'GET',
 }))
 
