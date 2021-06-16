@@ -37,7 +37,7 @@ admin.initializeApp({
   credential: admin.credential.cert({
     "projectId": process.env.Firebase_project_id,
     "private_key_id": process.env.Firebase_private_key_id,
-    "private_key": process.env.Firebase_private_key,
+    "private_key": process.env.Firebase_private_key.replace(/\\n/g, '\n'),
     "client_email": process.env.Firebase_client_email,
     "client_id": process.env.Firebase_client_id,
     "auth_uri" : process.env.Firebase_auth_uri,
