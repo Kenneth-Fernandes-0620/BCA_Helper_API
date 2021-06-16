@@ -34,8 +34,18 @@ app.use(limiter)
 
 // Initialize the admin SDK
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  storageBucket: process.env.Storage_Bucket,
+  credential: admin.credential.cert({
+    "projectId": process.env.Firebase_project_id,
+    "private_key_id": process.env.Firebase_private_key_id,
+    "private_key": process.env.Firebase_private_key,
+    "client_email": process.env.Firebase_client_email,
+    "client_id": process.env.Firebase_client_id,
+    "auth_uri" : process.env.Firebase_auth_uri,
+    "token_uri" : process.env.Firebase_token_uri,
+    "auth_provider_x509_cert_url" : process.env.Firebase_auth_provider_x509_cert_url,
+    "client_x509_cert_url": process.env.Firebase_client_x509_cert_url, 
+  }),
+  storageBucket: process.env.Firebase_Storage_Bucket,
 });
 
 // Get the Firestore Instance 
