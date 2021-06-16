@@ -1,0 +1,15 @@
+#header{
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+  padding: 2%;
+  margin: 0%;
+}
+.content-container{
+  min-height: calc(100vh - 34px);
+}
+.footer--pin{
+  position: relative;
+  left: 0;
+  bottom: 0;
+}
