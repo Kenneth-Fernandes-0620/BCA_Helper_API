@@ -67,23 +67,34 @@ app.get("/api", limiter, (req, res) => res.sendStatus(200));
 app.get("/api/Analytics", (req, res) => {
   const StartDate = req.query.StartDate;
   const EndDate = req.query.EndDate;
-  if(StartDate === null || EndDate === null) return res.status(404).send('Missing Query')
+  if(StartDate === undefined || EndDate === undefined) return res.status(404).send('Missing Query')
+  
+console.log(EndDate)
+
+  // Google Analytics Credentials
+  const cred = {
+    credentials: {
+      "client_email": process.env.Firebase_client_email,
+      "private_key": process.env.Firebase_private_key.replace(/\\n/g, '\n'),
+    },
+    projectId: process.env.Firebase_project_id
+  }  
+  const analyticsDataClient = new BetaAnalyticsDataClient(cred);
   async function runReport() {
-    return await new BetaAnalyticsDataClient().runReport({
+    await analyticsDataClient.runReport({
       property: `properties/${process.env.propertyId}`,
       dateRanges: [{
-        startDate: StartDate,
-        endDate: EndDate,
-      }, ],
-      dimensions: [{
-        name: 'dayOfWeek',
-      }, ],
-      metrics: [{
-        name: 'eventCount',
-      }, ],
-    })
+          startDate: StartDate,
+          endDate: EndDate,
+        },
+      ],
+      dimensions: [{name: 'dayOfWeek'},
+      ],
+      metrics: [{name: 'eventCount'},
+      ],
+    }).then((result)=>res.json(result)).catch(() => res.sendStatus(500))
   }
-  runReport().then((response) => res.json(response)).catch((er) => res.sendStatus(500));
+  runReport()
 })
  
 // Api Analytics Reporting

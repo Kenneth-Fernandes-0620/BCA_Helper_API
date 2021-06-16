@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react';
 import {Line} from 'react-chartjs-2';
+import {getCurrentDate} from '../util';
 
   const options = {
     scales: {
@@ -18,7 +19,7 @@ const Chart = () => {
 
   const chart = () =>{
     const link = (process.env.NODE_ENV === 'development')?'http://localhost:5000/':'https://bca-helper-api.herokuapp.com/';
-    fetch(`${link}api/Analytics?StartDate=2020-11-11`,{mode: "cors",method: 'GET'})
+    fetch(`${link}api/Analytics?StartDate=2020-11-11&EndDate=${getCurrentDate()}`,{mode: "cors",method: 'GET'})
     .then((res)=>res.json())
     .then((jsonObj)=>{
       const obj = jsonObj[0]["rows"];
