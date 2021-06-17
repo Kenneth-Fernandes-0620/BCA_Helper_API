@@ -49,7 +49,10 @@ admin.initializeApp({
 });
 
 // Get the Firestore Instance 
-const db = admin.firestore()
+const db = admin.firestore();
+
+//Get the Storage Bucket Instance
+const bucket = admin.storage().bucket();
 
 // Initialize the Mail Client
 var transporter = nodemailer.createTransport({
@@ -63,13 +66,24 @@ var transporter = nodemailer.createTransport({
 // Api Connection Test
 app.get("/api", limiter, (req, res) => res.sendStatus(200));
 
+// Api Download Resources Route
+app.get('/api/Download',limiter,(req,res)=>{
+  // TODO: Implement get Latest Version
+  const tomorrow = new Date(new Date())
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const file = bucket.file('favicon.ico.png');  //Change to zip/jar/tar file name
+  return file.getSignedUrl({
+    action: 'read',
+    expires: `${tomorrow.getMonth() + 1}-${tomorrow.getDate()}-${tomorrow.getFullYear()}` //month-date-Year
+  }).then(signedUrls => res.status(200).send(signedUrls[0]) 
+  ).catch((e)=>console.log(e))
+})
+
 // Api Analytics
 app.get("/api/Analytics", (req, res) => {
   const StartDate = req.query.StartDate;
   const EndDate = req.query.EndDate;
   if(StartDate === undefined || EndDate === undefined) return res.status(404).send('Missing Query')
-  
-console.log(EndDate)
 
   // Google Analytics Credentials
   const cred = {

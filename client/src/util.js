@@ -1,3 +1,4 @@
+// TODO: return the week's Start and end data from argument
 export function getCurrentDate(separator='-'){
     let newDate = new Date()
     let date = newDate.getDate();
